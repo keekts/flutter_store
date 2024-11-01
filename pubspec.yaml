@@ -38,6 +38,8 @@ dependencies:
 
   # http client fpr API calls
   http: ^1.2.2
+  # save token, etc... to application local storage
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:

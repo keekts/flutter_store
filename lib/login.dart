@@ -1,9 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_store/services/rest_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dashboard.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -70,12 +73,24 @@ class _LoginState extends State<Login> {
                         var body = jsonDecode(response.body);
                         print(body);
 
+                        // Create shared preferences
+                        SharedPreferences prefs = await SharedPreferences
+                            .getInstance(); //Create Object of SharedPreferences
+
+                        // Save Token to Shared Preferences
+                        prefs.setString('token', body['token']);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Login successful!'),
                             backgroundColor: Colors.green,
                             behavior: SnackBarBehavior.floating,
                           ),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Dashboard()),
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
