@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_store/services/rest_api.dart';
 
-
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -32,15 +31,15 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              
               children: [
-                
-                Image.asset('assets/images/logo.png', width: 150,),
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 150,
+                ),
                 SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-               
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
@@ -63,19 +62,14 @@ class _LoginState extends State<Login> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       // print('Email: $_email, Password: $_password');
-                      // Call API login
-                      var response = await CallAPI().loginAPI(
-                        {
-                          'username': _email,
-                          'password': _password
-                        }
-                      );
+                      try {
+                        // Call API login
+                        var response = await CallAPI().loginAPI(
+                            {'username': _email, 'password': _password});
 
-                      var body = response.body;
-                      // var body =  await json.decode(json.encode(response.body));
+                        var body = jsonDecode(response.body);
+                        print(body);
 
-                      print(body); 
-                      if (_email == 'admin@gmail.com' && _password == 'admin') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Login successful!'),
@@ -83,7 +77,7 @@ class _LoginState extends State<Login> {
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
-                      }else{
+                      } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Login failed!'),
