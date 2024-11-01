@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_store/models/ProductModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/constants.dart';
@@ -18,5 +19,14 @@ class CallAPI {
       body: jsonEncode(data),
       headers: _setHeaders(),
     );
+  }
+
+  // Get All Products API
+  Future<List<ProductModel>?> getAllProducts() async {
+    final response = await http.get(
+      Uri.parse('${baseURLAPI}products'),
+      headers: _setHeaders(),
+    );
+    return productModelFromJson(response.body);
   }
 }
