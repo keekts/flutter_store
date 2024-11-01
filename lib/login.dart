@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_store/services/rest_api.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -55,10 +59,22 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 10),
                 ElevatedButton(
                   child: Text('Login'),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      print('Email: $_email, Password: $_password');
+                      // print('Email: $_email, Password: $_password');
+                      // Call API login
+                      var response = await CallAPI().loginAPI(
+                        {
+                          'username': _email,
+                          'password': _password
+                        }
+                      );
+
+                      var body = response.body;
+                      // var body =  await json.decode(json.encode(response.body));
+
+                      print(body); 
                       if (_email == 'admin@gmail.com' && _password == 'admin') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

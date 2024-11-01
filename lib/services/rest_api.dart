@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import '../utils/constants.dart';
@@ -11,6 +13,10 @@ class CallAPI {
 
   // Login User API
   loginAPI(data) async {
-    return await http.post(Uri.parse('${baseURLAPI}'));
+    return await http.post(
+      Uri.parse('${baseURLAPI}auth/login'),
+      body: jsonEncode(data),
+      headers: _setHeaders(),
+    );
   }
 }
